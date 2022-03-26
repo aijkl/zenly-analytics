@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\zenly-api-client\ZenlyAPIClient\ZenlyAPIClient.csproj" />
     <ProjectReference Include="..\Zenly.Analytics.DataBase\Zenly.Analytics.DataBase.csproj" />
   </ItemGroup>
 
