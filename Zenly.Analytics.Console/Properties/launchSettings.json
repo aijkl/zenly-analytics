@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Zenly.Analytics.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "daemon"
+    }
+  }
+}
