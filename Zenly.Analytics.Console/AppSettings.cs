@@ -13,17 +13,22 @@ namespace Zenly.Analytics.ConsoleApp
         [JsonIgnore]
         internal static readonly string FileExceptionMessage = "An error occurred while reading the configuration file";
 
+#if DEBUG
+        [JsonIgnore]
+        internal static readonly string FileName = "appsettings.Development.json";
+#else
         [JsonIgnore]
         internal static readonly string FileName = "appsettings.json";
+#endif
 
         [JsonProperty("connectionString")]
         internal string ConnectionString { set; get; }
 
         [JsonProperty("databaseCommandSettings")]
-        internal DataBaseCommandSettings DataBaseCommandSettings { set; get; }
+        internal DataBaseCommandSettings DataBaseCommand { set; get; }
 
         [JsonProperty("discordBotCommandSettings")]
-        internal DiscordBotCommandSettings DiscordBotCommandSettings { set; get; }
+        internal DiscordBotSettings DiscordBot { set; get; }
 
         [JsonProperty("languageDataSet")]
         internal LanguageDataSet LanguageDataSet { set; get; }
@@ -55,6 +60,12 @@ namespace Zenly.Analytics.ConsoleApp
 
         [JsonProperty("General.Unexpected")]
         internal Dictionary<string, string> GeneralUnexpected { set; get; }
+
+        [JsonProperty("Discord.Connected")]
+        internal Dictionary<string, string> DiscordConnected { set; get; }
+
+        [JsonProperty("Discord.Disconnected")]
+        internal Dictionary<string, string> DiscordDisconnected { set; get; }
 
         [JsonProperty("General.Complete")]
         internal Dictionary<string, string> GeneralComplete { set; get; }

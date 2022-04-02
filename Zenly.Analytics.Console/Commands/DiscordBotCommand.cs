@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Aijkl.Zenly.Analytics.ConsoleApp.Helper;
-using Aijkl.Zenly.APIClient;
-using GeoCoordinatePortable;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using Zenly.Analytics.Console.DiscordBot;
 using Zenly.Analytics.ConsoleApp;
 
 namespace Zenly.Analytics.Console.Commands
@@ -19,6 +16,7 @@ namespace Zenly.Analytics.Console.Commands
             try
             {
                 appSettings = AppSettings.LoadFromFile();
+                // todo 場所の重複を検出して例外を出す
             }
             catch (Exception exception)
             {
@@ -27,38 +25,31 @@ namespace Zenly.Analytics.Console.Commands
                 return 1;
             }
 
-            appSettings.DiscordBotCommandSettings.NotificationRule
-
-            try
+            using var businessLogic = new BusinessLogic(appSettings.DiscordBot);
+            businessLogic.DiscordConnected += () =>
             {
-                var serializedLocations = userLocations.Select(x => new SerializedLocation(x.UserId, new GeoCoordinate(x.Latitude, x.Latitude), DateTime.Now));
-                foreach (var serializedLocation in serializedLocations)
-                {
-                    var cachedLocation = _cachedLocations.FirstOrDefault(x => serializedLocation.UserId == x.UserId);
-                    if (cachedLocation == null)
-                    {
-                        return 0;
-                    }
-
-                    if (cachedLocation.GeoCoordinate.GetDistanceTo(serializedLocation.GeoCoordinate) <= _appSettings.DiscordBotCommandSettings.ToleranceMeter)
-                    {
-                    }
-                }
-            }
-            catch (ZenlyApiException exception)
+                AnsiConsoleHelper.WrapMarkupLine(appSettings.LanguageDataSet.GetValue(nameof(LanguageDataSet.DiscordConnected)), AnsiConsoleHelper.State.Success);
+            };
+            businessLogic.DiscordDisconnected += exception =>
             {
-                AnsiConsoleHelper.WrapMarkupLine(AppSettings.LanguageDataSet.GetValue(nameof(LanguageDataSet.ZenlyError)));
+                AnsiConsoleHelper.WrapMarkupLine(appSettings.LanguageDataSet.GetValue(nameof(LanguageDataSet.DiscordDisconnected)), AnsiConsoleHelper.State.Failure);
                 AnsiConsole.WriteException(exception);
-            }
-            catch (Exception exception)
+            };
+            businessLogic.CanIgnoreException += exception =>
             {
-                AnsiConsoleHelper.WrapMarkupLine(AppSettings.LanguageDataSet.GetValue(nameof(LanguageDataSet.GeneralUnexpected)));
                 AnsiConsole.WriteException(exception);
-            }
-            finally
+            };
+            businessLogic.ZenlyApiOk += () =>
             {
-                Thread.Sleep(AppSettings.DataBaseCommandSettings.PollingIntervalMs);
-            }
+                AnsiConsoleHelper.WrapMarkupLine(appSettings.LanguageDataSet.GetValue(nameof(LanguageDataSet.ZenlyAPIOk)), AnsiConsoleHelper.State.Success);
+            };
+            businessLogic.ZenlyApiError += exception =>
+            {
+                AnsiConsoleHelper.WrapMarkupLine(appSettings.LanguageDataSet.GetValue(nameof(LanguageDataSet.ZenlyError)), AnsiConsoleHelper.State.Failure);
+                AnsiConsole.WriteException(exception);
+            };
+            businessLogic.StartMainLogic(CancellationToken.None);
+            return 0;
         }
     }
 }

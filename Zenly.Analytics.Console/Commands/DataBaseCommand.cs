@@ -72,7 +72,7 @@ namespace Zenly.Analytics.Console.Commands
                 }
                 finally
                 {
-                    Thread.Sleep(appSettings.DataBaseCommandSettings.PollingIntervalMs);
+                    Thread.Sleep(appSettings.DataBaseCommand.PollingIntervalMs);
                 }
             }
         }
