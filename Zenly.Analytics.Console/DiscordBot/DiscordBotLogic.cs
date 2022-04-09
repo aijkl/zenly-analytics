@@ -39,13 +39,11 @@ namespace Zenly.Analytics.Console.DiscordBot
                 OnDiscordDisconnected(exception);
                 return Task.CompletedTask;
             };
-            
         }
-
         internal void StartMainLogic(CancellationToken cancellationToken)
         {
             using var zenlyApiClient = new ZenlyApiClient();
-            CachedLocations cachedLocations = new CachedLocations();
+            var cachedLocations = new CachedLocations();
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -55,7 +53,7 @@ namespace Zenly.Analytics.Console.DiscordBot
 
                 try
                 {
-                    List<UserLocation> userLocations = _discordBotSettings.Tokens.Select(x =>
+                    var userLocations = _discordBotSettings.Tokens.Select(x =>
                     {
                         string[] userIds = _discordBotSettings.Users.Where(y => y.TokenId == x.Id).Select(y => y.ZenlyId).ToArray();
                         var temp =  zenlyApiClient.WidgetClient.FetchUsersLocationAsync(userIds, x.Value).GetAwaiter().GetResult().ToList();
@@ -65,15 +63,15 @@ namespace Zenly.Analytics.Console.DiscordBot
 
                     foreach (var userLocation in userLocations)
                     {
-                        User user = _discordBotSettings.Users.First(x => x.ZenlyId == userLocation.UserId);
-                        InspectionLocation withinRangeInspectLocation = _discordBotSettings.InspectionLocations.FirstOrDefault(x => _discordBotSettings.ToleranceMeter >= x.GetDistanceMeter(userLocation));
+                        var user = _discordBotSettings.Users.First(x => x.ZenlyId == userLocation.UserId);
+                        var withinRangeInspectLocation = _discordBotSettings.InspectionLocations.FirstOrDefault(x => _discordBotSettings.ToleranceMeter >= x.GetDistanceMeter(userLocation));
 
                         if (withinRangeInspectLocation == null)
                         {
-                            InspectionLocation inspectionLocation = cachedLocations.GetOrDefault(userLocation.UserId);
-                            if (inspectionLocation != null)
+                            var cachedLocation = cachedLocations.GetOrDefault(userLocation.UserId);
+                            if (cachedLocation != null)
                             {
-                                SendLeaveMessage(user, inspectionLocation);
+                                SendLeaveMessage(user, cachedLocation);
                                 cachedLocations.Remove(user);
                             }
                             continue;
@@ -82,7 +80,7 @@ namespace Zenly.Analytics.Console.DiscordBot
                         var cachedInspectionLocation = cachedLocations.GetOrDefault(userLocation.UserId);
                         if (cachedInspectionLocation == null)
                         {
-                            cachedLocations.AddOrUpdate(user, withinRangeInspectLocation);
+                            cachedLocations.AddOrUpdate(user, new CachedLocation(withinRangeInspectLocation, DateTime.Now));
                             SendArrivalMessage(user, withinRangeInspectLocation);
                         }
                     }
@@ -103,18 +101,23 @@ namespace Zenly.Analytics.Console.DiscordBot
         }
         internal void SendArrivalMessage(User user, InspectionLocation inspectionLocation)
         {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
+            var embedBuilder = new EmbedBuilder();
             embedBuilder.Title = user.Name;
             embedBuilder.ThumbnailUrl = user.ProfileUrl;
             embedBuilder.Description = Template.Parse(_discordBotSettings.ScribanArrival).Render(new { locationName = inspectionLocation.LocationName });
             _socketClient.GetGuild(user.NotificationChannel.GuildId).GetTextChannel(user.NotificationChannel.ChannelId).SendMessageAsync(string.Empty, embed: embedBuilder.Build()).GetAwaiter().GetResult();
         }
-        internal void SendLeaveMessage(User user, InspectionLocation inspectionLocation)
+        internal void SendLeaveMessage(User user, CachedLocation cachedLocation)
         {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
+            var embedBuilder = new EmbedBuilder();
             embedBuilder.Title = user.Name;
             embedBuilder.ThumbnailUrl = user.ProfileUrl;
-            embedBuilder.Description = Template.Parse(_discordBotSettings.ScribanLeave).Render(new { locationName = inspectionLocation.LocationName });
+            embedBuilder.Description = Template.Parse(_discordBotSettings.ScribanLeave).Render(new { locationName = cachedLocation.LocationName });
+            embedBuilder.AddField(new EmbedFieldBuilder()
+            {
+                Name = nameof(TimeSpan.TotalMinutes),
+                Value = (DateTime.Now - cachedLocation.StartDateTime).TotalMinutes
+            });
             _socketClient.GetGuild(user.NotificationChannel.GuildId).GetTextChannel(user.NotificationChannel.ChannelId).SendMessageAsync(string.Empty, embed: embedBuilder.Build()).GetAwaiter().GetResult();
         }
         protected virtual void OnDiscordConnected()

@@ -1,15 +1,6 @@
-﻿using GeoCoordinatePortable;
+﻿using System;
 
 namespace Zenly.Analytics.Console.Discord
 {
-    internal class SerializedLocation
-    {
-        internal SerializedLocation(string userId,GeoCoordinate geoCoordinate)
-        {
-            UserId = userId;
-            GeoCoordinate = geoCoordinate;
-        }
-        internal string UserId { set; get; }
-        internal GeoCoordinate GeoCoordinate { set; get; }
-    }
+    internal record CachedLocation(InspectionLocation InspectionLocation, DateTime StartDateTime) : InspectionLocation(InspectionLocation);
 }

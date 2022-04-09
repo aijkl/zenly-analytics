@@ -3,9 +3,5 @@ using Zenly.APIClient;
 
 namespace Zenly.Analytics.Console.Discord
 {
-    internal class InspectionLocation : Location
-    {
-        [JsonProperty("locationName", Required = Required.Always)]
-        public string LocationName { set; get; }
-    }
+    internal record InspectionLocation(double Longitude, double Latitude, [JsonProperty("locationName", Required = Required.Always)] string LocationName) : Location(Longitude, Latitude);
 }
