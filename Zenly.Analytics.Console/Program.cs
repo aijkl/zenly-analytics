@@ -12,7 +12,8 @@ namespace Aijkl.Zenly.Analytics.ConsoleApp
             CommandApp commandApp = new CommandApp();
             commandApp.Configure(x =>
             {
-                x.AddCommand<DiscordBotCommand>("discord");
+                x.AddCommand<NotificationCommand>("notification");
+                x.AddCommand<StatusCommand>("status");
                 x.SetApplicationName("zenly analytics");
                 x.SetApplicationVersion("1.0");
                 x.SetExceptionHandler(exception =>

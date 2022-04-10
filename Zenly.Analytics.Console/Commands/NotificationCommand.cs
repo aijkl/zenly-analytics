@@ -8,7 +8,7 @@ using Zenly.Analytics.ConsoleApp;
 
 namespace Zenly.Analytics.Console.Commands
 {
-    internal class DiscordBotCommand : Command
+    internal class NotificationCommand : Command
     {
         public override int Execute(CommandContext context)
         {
@@ -25,7 +25,7 @@ namespace Zenly.Analytics.Console.Commands
                 return 1;
             }
 
-            using var businessLogic = new BusinessLogic(appSettings.DiscordBot);
+            using var businessLogic = new BusinessLogic(appSettings.Notification);
             businessLogic.DiscordConnected += () =>
             {
                 AnsiConsoleHelper.WrapMarkupLine(appSettings.LanguageDataSet.GetValue(nameof(LanguageDataSet.DiscordConnected)), AnsiConsoleHelper.State.Success);

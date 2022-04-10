@@ -15,7 +15,7 @@ namespace Zenly.Analytics.Console.DiscordBot
     internal class BusinessLogic : IDisposable
     {
         private DiscordSocketClient _socketClient;
-        private readonly DiscordBotSettings _discordBotSettings;
+        private readonly NotificationCommandSettings _discordBotSettings;
 
         public event Action DiscordConnected;
         public event Action<Exception> DiscordDisconnected;
@@ -23,7 +23,7 @@ namespace Zenly.Analytics.Console.DiscordBot
         public event Action<ZenlyApiException> ZenlyApiError;
         public event Action<Exception> CanIgnoreException;
 
-        internal BusinessLogic(DiscordBotSettings discordBotSettings)
+        internal BusinessLogic(NotificationCommandSettings discordBotSettings)
         {
             _discordBotSettings = discordBotSettings;
             _socketClient = new DiscordSocketClient();
