@@ -6,7 +6,53 @@
 予め定義しておいた場所への出入を通知する  
 ![image](https://user-images.githubusercontent.com/51302983/161363660-71b55098-00ac-46fc-a5f0-c5a232a3c716.png)  
 ```
-    "toleranceMeter": 100,//誤差の許容値 半径100メートルの円
+"notificationCommandSettings": {
+    "token": "**************************",
+    "toleranceMeter": 200,
+    "users": [
+      {
+        "zenlyId": "u-3QJ57r8E0Uvn4y5JnntTao6C*********",
+        "name": "みかん",
+        "tokenId": "token-2",
+        "notificationChannel": {
+          "guildId": 957439194807009311,
+          "channelId": 957439707803959376
+        },
+        "profileUrl": "https://cdn.discordapp.com/attachments/893093461652291634/957137402877587476/X5EPqjff_400x400_1.jpg"
+      },
+      {
+        "zenlyId": "u-BgUiXncsnSk0C0mib0KJXmgo*********",
+        "name": "みんとこ",
+        "tokenId": "token-1",
+        "notificationChannel": {
+          "guildId": 957439194807009311,
+          "channelId": 957439195473920002
+        },
+        "profileUrl": "https://cdn.discordapp.com/attachments/791661684061372436/935698866320310383/IMG_0397.jpg"
+      },
+      {
+        "zenlyId": "u-t0B0P4ub1FUR2pZc2YyvxU0Li*********",
+        "name": "おかだー",
+        "tokenId": "token-2",
+        "notificationChannel": {
+          "guildId": 957439194807009311,
+          "channelId": 957439680012501013
+        },
+        "profileUrl": "https://media.discordapp.net/attachments/791661684061372436/936280129175453696/IMG_6260.jpg?width=676&height=676"
+      }
+    ],
+    "tokens": [
+      {
+        "id": "token-1",
+        "value": "s-mT*******************",
+        "summary": "みかんのトークン"
+      },
+      {
+        "id": "token-2",
+        "value": "s-mSQ5***************",
+        "summary": "ともやのトークン"
+      }
+    ],
     "inspectionLocations": [
       {
         "locationName": "HAL 名古屋", //学校
@@ -17,23 +63,12 @@
         "locationName": "BizComfort", //コワーキングスペース
         "longitude": "136.889705370732",
         "latitude": "35.16629740816833"
-      },
-      {
-        "locationName": "みかんの家",
-        "longitude": "",
-        "latitude": ""
-      },
-      {
-        "locationName": "みんとこの家",
-        "longitude": "",
-        "latitude": ""
-      },
-      {
-        "locationName": "おかでぃーの家",
-        "longitude": "",
-        "latitude": ""
       }
     ],
+    "scribanArrival": "**{{location_name}}に到着しました**",
+    "scribanLeave": "**{{location_name}}から離れました**",
+    "pollingIntervalMs": 30000
+  },
 ```
 
 ## ステータスコマンド  
