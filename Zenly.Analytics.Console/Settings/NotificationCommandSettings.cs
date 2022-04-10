@@ -5,7 +5,7 @@ using Zenly.Analytics.Console.DiscordBot;
 
 namespace Zenly.Analytics.Console.Settings
 {
-    internal class DiscordBotSettings
+    internal class NotificationCommandSettings
     {
         [JsonProperty("token")]
         internal string Token { set; get; }

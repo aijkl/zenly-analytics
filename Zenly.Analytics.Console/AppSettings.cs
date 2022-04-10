@@ -27,8 +27,11 @@ namespace Zenly.Analytics.ConsoleApp
         [JsonProperty("databaseCommandSettings")]
         internal DataBaseCommandSettings DataBaseCommand { set; get; }
 
-        [JsonProperty("discordBotCommandSettings")]
-        internal DiscordBotSettings DiscordBot { set; get; }
+        [JsonProperty("notificationCommandSettings")]
+        internal NotificationCommandSettings Notification { set; get; }
+
+        [JsonProperty("statusCommandSettings")]
+        internal StatusCommandSettings Status { set; get; }
 
         [JsonProperty("languageDataSet")]
         internal LanguageDataSet LanguageDataSet { set; get; }

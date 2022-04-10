@@ -2,7 +2,7 @@
   "profiles": {
     "Zenly.Analytics.Console": {
       "commandName": "Project",
-      "commandLineArgs": "discord"
+      "commandLineArgs": "status"
     }
   }
 }
