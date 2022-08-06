@@ -14,11 +14,11 @@ namespace Zenly.Analytics.Console.DiscordRpc
     internal class BusinessLogic
     {
         private readonly StatusCommandSettings _settings;
-        public event Action DiscordConnected;
-        public event Action<Exception> DiscordDisconnected;
-        public event Action ZenlyApiOk;
-        public event Action<ZenlyApiException> ZenlyApiError;
-        public event Action<Exception> CanIgnoreException;
+        public event Action? DiscordConnected;
+        public event Action<Exception>? DiscordDisconnected;
+        public event Action? ZenlyApiOk;
+        public event Action<ZenlyApiException>? ZenlyApiError;
+        public event Action<Exception>? CanIgnoreException;
         internal BusinessLogic(StatusCommandSettings settings)
         {
             _settings = settings;

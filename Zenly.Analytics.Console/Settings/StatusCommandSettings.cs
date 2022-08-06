@@ -6,6 +6,18 @@ namespace Zenly.Analytics.Console.Settings
 {
     internal class StatusCommandSettings
     {
+        public StatusCommandSettings(string token, string zenlyToken, int pollingIntervalMs, string userId, string scribanMeterFromHome, string scribanLocationName, StatusLocation home, List<StatusLocation> locations)
+        {
+            Token = token;
+            ZenlyToken = zenlyToken;
+            PollingIntervalMs = pollingIntervalMs;
+            UserId = userId;
+            ScribanMeterFromHome = scribanMeterFromHome;
+            ScribanLocationName = scribanLocationName;
+            Home = home;
+            Locations = locations;
+        }
+
         [JsonProperty("token")]
         public string Token { set; get; }
 

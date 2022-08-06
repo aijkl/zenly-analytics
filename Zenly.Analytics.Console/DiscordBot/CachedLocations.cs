@@ -5,30 +5,22 @@ using Zenly.APIClient;
 
 namespace Zenly.Analytics.Console.DiscordBot
 {
-    internal class CachedLocations
+    internal class LocationHolder
     {
         private readonly List<KeyValuePair<User, CachedLocation>> _userLocations;
-
-        internal CachedLocations()
+        internal LocationHolder()
         {
             _userLocations = new List<KeyValuePair<User, CachedLocation>>();
         }
-
         internal bool IsStay(User user, Location location, double toleranceMeter)
         {
-            return _userLocations.Any(x => user.ZenlyId == x.Key.ZenlyId && x.Value.GetDistanceMeter(location) >= toleranceMeter);
+            return _userLocations.Any(x => user.ZenlyId == x.Key.ZenlyId && x.Value.UserLocation.GetDistanceMeter(location) >= toleranceMeter);
         }
-
-        internal CachedLocation GetOrDefault(string userId)
+        internal CachedLocation? TryGet(string userId)
         {
-            return _userLocations.FirstOrDefault(x => x.Key.ZenlyId == userId).Value;
+            var temp = _userLocations.FirstOrDefault(x => x.Key.ZenlyId == userId);
+            return temp.Equals(default(KeyValuePair<User, CachedLocation>)) ? null : temp.Value;
         }
-
-        internal void Remove(User user)
-        {
-            _userLocations.Remove(_userLocations.FirstOrDefault(x => x.Key.ZenlyId == user.ZenlyId));
-        }
-
         internal void AddOrUpdate(User user, CachedLocation inspectionLocation)
         {
             var cachedLocation = _userLocations.FirstOrDefault(x => x.Key.ZenlyId == user.ZenlyId);

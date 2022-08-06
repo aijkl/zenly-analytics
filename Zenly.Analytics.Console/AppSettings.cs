@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
 using Zenly.Analytics.Console;
 using Zenly.Analytics.Console.Settings;
@@ -21,10 +23,21 @@ namespace Zenly.Analytics.ConsoleApp
         internal static readonly string FileName = "appsettings.json";
 #endif
 
+        public AppSettings(string connectionString, DataBaseCommandSettings dataBaseCommand, NotificationCommandSettings notification, StatusCommandSettings status, LanguageDataSet languageDataSet)
+        {
+            ConnectionString = connectionString;
+            DataBaseCommand = dataBaseCommand;
+            Notification = notification;
+            Status = status;
+            LanguageDataSet = languageDataSet;
+        }
+
         [JsonProperty("connectionString")]
+        [JsonRequired]
         internal string ConnectionString { set; get; }
 
         [JsonProperty("databaseCommandSettings")]
+        [JsonRequired]
         internal DataBaseCommandSettings DataBaseCommand { set; get; }
 
         [JsonProperty("notificationCommandSettings")]
@@ -38,8 +51,7 @@ namespace Zenly.Analytics.ConsoleApp
 
         internal static AppSettings LoadFromFile()
         {
-            var appSettings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), FileName)));
-            return appSettings;
+            return JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), FileName))) ?? throw new ApplicationException(FileExceptionMessage);
         }
         internal void SaveToFile()
         {
@@ -48,9 +60,22 @@ namespace Zenly.Analytics.ConsoleApp
     }
     internal class LanguageDataSet
     {
+        public LanguageDataSet(Dictionary<string, string> generalUnexpected, Dictionary<string, string> discordConnected, Dictionary<string, string> discordDisconnected, Dictionary<string, string> generalComplete, Dictionary<string, string> daemonUserNotExits, Dictionary<string, string> zenlyApiOk, Dictionary<string, string> zenlyError)
+        {
+            GeneralUnexpected = generalUnexpected;
+            DiscordConnected = discordConnected;
+            DiscordDisconnected = discordDisconnected;
+            GeneralComplete = generalComplete;
+            DaemonUserNotExits = daemonUserNotExits;
+            ZenlyAPIOk = zenlyApiOk;
+            ZenlyError = zenlyError;
+        }
+
         internal string GetValue(string memberName)
         {
-            var keyValuePairs = (Dictionary<string, string>)GetType().GetProperty(memberName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(this);
+            var keyValuePairs = (Dictionary<string, string>?)GetType().GetProperty(memberName, BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this);
+            if (keyValuePairs == null) throw new ArgumentNullException(nameof(keyValuePairs), "Invalid memberName");
+
             if (keyValuePairs.TryGetValue(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, out var value))
             {
                 return value;

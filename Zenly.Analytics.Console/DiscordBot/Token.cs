@@ -4,6 +4,13 @@ namespace Zenly.Analytics.Console.DiscordBot
 {
     internal class Token
     {
+        public Token(string id, string value, string summary)
+        {
+            Id = id;
+            Value = value;
+            Summary = summary;
+        }
+
         [JsonProperty("id")]
         public string Id { set; get; }
 
