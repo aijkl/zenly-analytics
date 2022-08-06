@@ -122,7 +122,7 @@ namespace Zenly.Analytics.Console.DiscordBot
             embedBuilder.AddField(new EmbedFieldBuilder
             {
                 Name = nameof(TimeSpan.TotalMinutes),
-                Value = (DateTime.Now - cachedLocation.StartDateTime).TotalMinutes
+                Value = (int)(DateTime.Now - cachedLocation.StartDateTime).TotalMinutes
             });
             _socketClient.GetGuild(user.NotificationChannel.GuildId).GetTextChannel(user.NotificationChannel.ChannelId).SendMessageAsync(string.Empty, embed: embedBuilder.Build()).GetAwaiter().GetResult();
         }
