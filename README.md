@@ -1,3 +1,5 @@
+### プロジェクト参照を追加してください
+https://github.com/aijkl/zenly-api-client
 # zenly-analytics  
 - 通知コマンド
 - ステータスコマンド
