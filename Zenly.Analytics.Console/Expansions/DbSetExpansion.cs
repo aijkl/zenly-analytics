@@ -7,7 +7,7 @@ namespace Zenly.Analytics.ConsoleApp.Expansions
     {
         public static void AddOrUpdate<TEntity>(this DbSet<TEntity> dbSet, DbContext dbContext, string key, TEntity entity) where TEntity : class
         {
-            TEntity entityFromDb = dbSet.Find(key);
+            var entityFromDb = dbSet.Find(key);
             if (entityFromDb == null)
             {
                 dbSet.Add(entity);
@@ -21,7 +21,7 @@ namespace Zenly.Analytics.ConsoleApp.Expansions
         {
             foreach (var keyEntity in keyEntityMap)
             {
-                TEntity entityFromDb = dbSet.Find(keyEntity.Key);
+                var entityFromDb = dbSet.Find(keyEntity.Key);
                 if (entityFromDb == null)
                 {
                     dbSet.Add(keyEntity.Value);

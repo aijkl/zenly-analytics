@@ -20,7 +20,7 @@ namespace Zenly.Analytics.Console
 
         internal static Cache LoadFromFile()
         {
-            Cache appSettings = JsonConvert.DeserializeObject<Cache>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), FileName)));
+            var appSettings = JsonConvert.DeserializeObject<Cache>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), FileName)));
             return appSettings;
         }
         internal void SaveToFile()

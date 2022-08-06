@@ -41,10 +41,10 @@ namespace Zenly.Analytics.Console.Commands
                         continue;
                     }
 
-                    List<UserLocation> cachedLocations = new List<UserLocation>();
-                    foreach (TokenEntity tokenEntity in analyticsDbContext.TokenEntities.AsNoTracking())
+                    var cachedLocations = new List<UserLocation>();
+                    foreach (var tokenEntity in analyticsDbContext.TokenEntities.AsNoTracking())
                     {
-                        IEnumerable<UserLocation> userLocations = zenlyApiClient.WidgetClient.FetchUsersLocationAsync(analyticsDbContext.UserEntities.AsNoTracking().Where(x => x.TokenId == tokenEntity.Id).Select(x => x.Id), tokenEntity.Value).Result;
+                        var userLocations = zenlyApiClient.WidgetClient.FetchUsersLocationAsync(analyticsDbContext.UserEntities.AsNoTracking().Where(x => x.TokenId == tokenEntity.Id).Select(x => x.Id), tokenEntity.Value).Result;
                         AnsiConsoleHelper.WrapMarkupLine(appSettings.LanguageDataSet.GetValue(nameof(LanguageDataSet.ZenlyAPIOk)));
 
                         cachedLocations = cachedLocations.Concat(userLocations).ToList();

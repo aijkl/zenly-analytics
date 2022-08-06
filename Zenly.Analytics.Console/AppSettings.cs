@@ -38,7 +38,7 @@ namespace Zenly.Analytics.ConsoleApp
 
         internal static AppSettings LoadFromFile()
         {
-            AppSettings appSettings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), FileName)));
+            var appSettings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), FileName)));
             return appSettings;
         }
         internal void SaveToFile()
@@ -50,8 +50,8 @@ namespace Zenly.Analytics.ConsoleApp
     {
         internal string GetValue(string memberName)
         {
-            Dictionary<string, string> keyValuePairs = (Dictionary<string, string>)GetType().GetProperty(memberName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(this);
-            if (keyValuePairs.TryGetValue(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, out string value))
+            var keyValuePairs = (Dictionary<string, string>)GetType().GetProperty(memberName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(this);
+            if (keyValuePairs.TryGetValue(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, out var value))
             {
                 return value;
             }

@@ -55,7 +55,7 @@ namespace Zenly.Analytics.Console.DiscordBot
                 {
                     var userLocations = _discordBotSettings.Tokens.Select(x =>
                     {
-                        string[] userIds = _discordBotSettings.Users.Where(y => y.TokenId == x.Id).Select(y => y.ZenlyId).ToArray();
+                        var userIds = _discordBotSettings.Users.Where(y => y.TokenId == x.Id).Select(y => y.ZenlyId).ToArray();
                         var temp =  zenlyApiClient.WidgetClient.FetchUsersLocationAsync(userIds, x.Value).GetAwaiter().GetResult().ToList();
                         OnZenlyApiOk();
                         return temp;
