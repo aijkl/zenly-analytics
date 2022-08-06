@@ -64,8 +64,8 @@ namespace Zenly.Analytics.Console.DiscordRpc
 
                 try
                 {
-                    UserLocation userLocation = await zenlyApiClient.WidgetClient.FetchUserLocationAsync(_settings.UserId, _settings.ZenlyToken).ConfigureAwait(false);
-                    string locationName = locations.FirstOrDefault(x => x.GetDistanceMeter(userLocation) <= x.ToleranceMeter)?.LocationName;
+                    var userLocation = await zenlyApiClient.WidgetClient.FetchUserLocationAsync(_settings.UserId, _settings.ZenlyToken).ConfigureAwait(false);
+                    var locationName = locations.FirstOrDefault(x => x.GetDistanceMeter(userLocation) <= x.ToleranceMeter)?.LocationName;
                     string message;
                     if (string.IsNullOrEmpty(locationName))
                     {
