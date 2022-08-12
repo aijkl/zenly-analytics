@@ -8,16 +8,16 @@ namespace Zenly.Analytics.Console
 {
     internal class Cache
     {
-        private Cache(LocationHolder cachedLocations)
-        {
-            CachedLocations = cachedLocations;
-        }
-
         [JsonIgnore]
         internal static readonly string FileName = "discord-bot-cache.json";
 
-        [JsonProperty("cachedLocations")]
-        public LocationHolder CachedLocations { set; get; }
+        public Cache(LocationHolder locationHolder)
+        {
+            LocationHolder = locationHolder;
+        }
+
+        [JsonProperty("locationHolder")]
+        public LocationHolder LocationHolder { set; get; }
 
         internal static Cache LoadFromFile()
         {
