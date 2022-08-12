@@ -46,6 +46,8 @@ namespace Zenly.Analytics.Console.DiscordBot
             var locationHolder = new LocationHolder();
             while (true)
             {
+                if(_socketClient.ConnectionState != ConnectionState.Connected) continue;
+
                 if (cancellationToken.IsCancellationRequested)
                 {
                     return;
