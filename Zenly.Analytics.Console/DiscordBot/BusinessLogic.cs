@@ -53,12 +53,11 @@ namespace Zenly.Analytics.Console.DiscordBot
 
                 try
                 {
-                    OnZenlyApiOk();
-
                     foreach (var tokenUserMap in _discordBotSettings.Users.GroupBy(x => x.TokenId))
                     {
                         var tokenValue = _discordBotSettings.Tokens.First(x => x.Id == tokenUserMap.Key);
                         var locations = zenlyApiClient.WidgetClient.FetchUsersLocationAsync(tokenUserMap.Select(x => x.ZenlyId).ToArray(), tokenValue.Value).Result;
+                        OnZenlyApiOk();
 
                         foreach (var userLocation in locations)
                         {
