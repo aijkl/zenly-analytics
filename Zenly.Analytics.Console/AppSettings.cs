@@ -32,21 +32,19 @@ namespace Zenly.Analytics.ConsoleApp
             LanguageDataSet = languageDataSet;
         }
 
-        [JsonProperty("connectionString")]
-        [JsonRequired]
+        [JsonProperty("connectionString", Required = Required.Always)]
         internal string ConnectionString { set; get; }
 
-        [JsonProperty("databaseCommandSettings")]
-        [JsonRequired]
+        [JsonProperty("databaseCommandSettings", Required = Required.Always)]
         internal DataBaseCommandSettings DataBaseCommand { set; get; }
 
-        [JsonProperty("notificationCommandSettings")]
+        [JsonProperty("notificationCommandSettings", Required = Required.Always)]
         internal NotificationCommandSettings Notification { set; get; }
 
-        [JsonProperty("statusCommandSettings")]
+        [JsonProperty("statusCommandSettings", Required = Required.Always)]
         internal StatusCommandSettings Status { set; get; }
 
-        [JsonProperty("languageDataSet")]
+        [JsonProperty("languageDataSet", Required = Required.Always)]
         internal LanguageDataSet LanguageDataSet { set; get; }
 
         internal static AppSettings LoadFromFile()
@@ -60,12 +58,11 @@ namespace Zenly.Analytics.ConsoleApp
     }
     internal class LanguageDataSet
     {
-        public LanguageDataSet(Dictionary<string, string> generalUnexpected, Dictionary<string, string> discordConnected, Dictionary<string, string> discordDisconnected, Dictionary<string, string> generalComplete, Dictionary<string, string> daemonUserNotExits, Dictionary<string, string> zenlyApiOk, Dictionary<string, string> zenlyError)
+        public LanguageDataSet(Dictionary<string, string> generalUnexpected, Dictionary<string, string> discordConnected, Dictionary<string, string> discordDisconnected, Dictionary<string, string> daemonUserNotExits, Dictionary<string, string> zenlyApiOk, Dictionary<string, string> zenlyError)
         {
             GeneralUnexpected = generalUnexpected;
             DiscordConnected = discordConnected;
             DiscordDisconnected = discordDisconnected;
-            GeneralComplete = generalComplete;
             DaemonUserNotExits = daemonUserNotExits;
             ZenlyAPIOk = zenlyApiOk;
             ZenlyError = zenlyError;
@@ -86,25 +83,22 @@ namespace Zenly.Analytics.ConsoleApp
             return value;
         }
 
-        [JsonProperty("General.Unexpected")]
+        [JsonProperty("General.Unexpected", Required = Required.Always)]
         internal Dictionary<string, string> GeneralUnexpected { set; get; }
 
-        [JsonProperty("Discord.Connected")]
+        [JsonProperty("Discord.Connected", Required = Required.Always)]
         internal Dictionary<string, string> DiscordConnected { set; get; }
 
-        [JsonProperty("Discord.Disconnected")]
+        [JsonProperty("Discord.Disconnected", Required = Required.Always)]
         internal Dictionary<string, string> DiscordDisconnected { set; get; }
 
-        [JsonProperty("General.Complete")]
-        internal Dictionary<string, string> GeneralComplete { set; get; }
-
-        [JsonProperty("Daemon.UserNotExits")]
+        [JsonProperty("Daemon.UserNotExits", Required = Required.Always)]
         internal Dictionary<string, string> DaemonUserNotExits { set; get; }
 
-        [JsonProperty("ZenlyApi.Ok")]
+        [JsonProperty("ZenlyApi.Ok", Required = Required.Always)]
         internal Dictionary<string, string> ZenlyAPIOk { set; get; }
 
-        [JsonProperty("ZenlyApi.Error")]
+        [JsonProperty("ZenlyApi.Error", Required = Required.Always)]
         internal Dictionary<string, string> ZenlyError { set; get; }
     }
 }

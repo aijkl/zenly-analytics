@@ -18,28 +18,28 @@ namespace Zenly.Analytics.Console.Settings
             Locations = locations;
         }
 
-        [JsonProperty("token")]
+        [JsonProperty("token", Required = Required.Always)]
         public string Token { set; get; }
 
-        [JsonProperty("zenlyToken")]
+        [JsonProperty("zenlyToken", Required = Required.Always)]
         public string ZenlyToken { set; get; }
 
-        [JsonProperty("pollingIntervalMs")]
+        [JsonProperty("pollingIntervalMs", Required = Required.Always)]
         public int PollingIntervalMs { set; get; }
 
-        [JsonProperty("userId")]
+        [JsonProperty("userId", Required = Required.Always)]
         public string UserId { set; get; }
 
-        [JsonProperty("scribanMeterFromHome")]
+        [JsonProperty("scribanMeterFromHome", Required = Required.Always)]
         public string ScribanMeterFromHome { set; get; }
 
-        [JsonProperty("scribanLocationName")]
+        [JsonProperty("scribanLocationName", Required = Required.Always)]
         public string ScribanLocationName { set; get; }
 
-        [JsonProperty("home")]
+        [JsonProperty("home", Required = Required.Always)]
         public StatusLocation Home { set; get; }
 
-        [JsonProperty("locations")]
+        [JsonProperty("locations", Required = Required.Always)]
         public List<StatusLocation> Locations { set; get; }
     }
 }

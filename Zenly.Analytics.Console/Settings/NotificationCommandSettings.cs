@@ -19,10 +19,10 @@ namespace Zenly.Analytics.Console.Settings
             InspectionLocations = inspectionLocations;
         }
 
-        [JsonProperty("token")]
+        [JsonProperty("token", Required = Required.Always)]
         internal string Token { set; get; }
 
-        [JsonProperty("pollingIntervalMs")]
+        [JsonProperty("pollingIntervalMs", Required = Required.Always)]
         internal int PollingIntervalMs { set; get; }
 
         [JsonProperty("scribanArrival", Required = Required.Always)]
