@@ -4,7 +4,7 @@ namespace Zenly.Analytics.Console
 {
     internal class DataBaseCommandSettings
     {
-        [JsonProperty("pollingIntervalMs")]
+        [JsonProperty("pollingIntervalMs", Required = Required.Always)]
         internal int PollingIntervalMs { set; get; }
     }
 }

@@ -1,27 +1,27 @@
-﻿using System.IO;
+﻿// TODO Stateをファイルに書いて再起動しても状態を継続する
+using System;
+using System.IO;
 using Newtonsoft.Json;
-using Aijkl.Zenly.APIClient;
-using System.Collections.Generic;
 using Zenly.Analytics.Console.DiscordBot;
 
 namespace Zenly.Analytics.Console
 {
     internal class Cache
     {
-        private Cache()
-        {
-        }
-
         [JsonIgnore]
         internal static readonly string FileName = "discord-bot-cache.json";
 
-        [JsonProperty("cachedLocations")]
-        public CachedLocations CachedLocations { set; get; }
+        public Cache(LocationHolder locationHolder)
+        {
+            LocationHolder = locationHolder;
+        }
+
+        [JsonProperty("locationHolder")]
+        public LocationHolder LocationHolder { set; get; }
 
         internal static Cache LoadFromFile()
         {
-            var appSettings = JsonConvert.DeserializeObject<Cache>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), FileName)));
-            return appSettings;
+            return JsonConvert.DeserializeObject<Cache>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), FileName))) ?? throw new ApplicationException("TODO message");
         }
         internal void SaveToFile()
         {

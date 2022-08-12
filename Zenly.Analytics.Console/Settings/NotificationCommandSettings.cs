@@ -7,10 +7,22 @@ namespace Zenly.Analytics.Console.Settings
 {
     internal class NotificationCommandSettings
     {
-        [JsonProperty("token")]
+        public NotificationCommandSettings(string token, int pollingIntervalMs, string scribanArrival, string scribanLeave, double toleranceMeter, List<User> users, List<Token> tokens, List<InspectionLocation> inspectionLocations)
+        {
+            Token = token;
+            PollingIntervalMs = pollingIntervalMs;
+            ScribanArrival = scribanArrival;
+            ScribanLeave = scribanLeave;
+            ToleranceMeter = toleranceMeter;
+            Users = users;
+            Tokens = tokens;
+            InspectionLocations = inspectionLocations;
+        }
+
+        [JsonProperty("token", Required = Required.Always)]
         internal string Token { set; get; }
 
-        [JsonProperty("pollingIntervalMs")]
+        [JsonProperty("pollingIntervalMs", Required = Required.Always)]
         internal int PollingIntervalMs { set; get; }
 
         [JsonProperty("scribanArrival", Required = Required.Always)]
