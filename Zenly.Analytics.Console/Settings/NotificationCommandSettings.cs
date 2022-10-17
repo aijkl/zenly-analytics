@@ -13,6 +13,12 @@ namespace Zenly.Analytics.Console.Settings
         [JsonProperty("pollingIntervalMs")]
         internal int PollingIntervalMs { set; get; }
 
+        [JsonProperty("arrivalNotifyAfterMs")]
+        internal int ArrivalNotifyAfterMs { set; get; }
+
+        [JsonProperty("leaveNotifyAfterMs")]
+        internal int LeaveNotifyAfterMs { set; get; }
+
         [JsonProperty("scribanArrival", Required = Required.Always)]
         internal string ScribanArrival { set; get; }
 

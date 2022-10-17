@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -71,17 +70,27 @@ namespace Zenly.Analytics.Console.DiscordBot
                             var cachedLocation = cachedLocations.GetOrDefault(userLocation.UserId);
                             if (cachedLocation != null)
                             {
-                                SendLeaveMessage(user, cachedLocation);
-                                cachedLocations.Remove(user);
+                                cachedLocation.LeaveDateTime ??= DateTime.Now;
+                                if ((DateTime.Now - (DateTime)cachedLocation.LeaveDateTime).TotalMilliseconds >= _discordBotSettings.LeaveNotifyAfterMs)
+                                {
+                                    SendLeaveMessage(user, cachedLocation);
+                                    cachedLocations.Remove(user);
+                                }
                             }
-                            continue;
                         }
-
-                        var cachedInspectionLocation = cachedLocations.GetOrDefault(userLocation.UserId);
-                        if (cachedInspectionLocation == null)
+                        else
                         {
-                            cachedLocations.AddOrUpdate(user, new CachedLocation(withinRangeInspectLocation, DateTime.Now));
-                            SendArrivalMessage(user, withinRangeInspectLocation);
+                            var cachedInspectionLocation = cachedLocations.GetOrDefault(userLocation.UserId);
+                            if (cachedInspectionLocation == null)
+                            {
+                                cachedLocations.AddOrUpdate(user, new CachedLocation(withinRangeInspectLocation, DateTime.Now));
+                            }
+
+                            if (cachedInspectionLocation is { ArrivalNotifySent: false } && (DateTime.Now - cachedInspectionLocation.StartDateTime).TotalMilliseconds >= _discordBotSettings.ArrivalNotifyAfterMs)
+                            {
+                                SendArrivalMessage(user, withinRangeInspectLocation);
+                                cachedInspectionLocation.ArrivalNotifySent = true;
+                            }
                         }
                     }
                 }
